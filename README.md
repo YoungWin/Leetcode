@@ -1,4 +1,4 @@
-# Leetcode
+# LC_play
 
 按题型总结
 -链表
