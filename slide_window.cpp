@@ -131,6 +131,36 @@ public:
 };
 
 /*
+209. 长度最小的子数组
+给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的 连续 子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。
+示例：
+输入：s = 7, nums = [2,3,1,2,4,3]
+输出：2
+解释：子数组 [4,3] 是该条件下的长度最小的子数组。
+进阶：
+如果你已经完成了 O(n) 时间复杂度的解法, 请尝试 O(n log n) 时间复杂度的解法。
+*/
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int N = nums.size();
+        if(N == 0) return 0;
+        int left = 0, right = 0, res = N+1;
+        int partSum = 0;   //当前片段数组和
+        while(right < N){
+            partSum += nums[right];
+            right++;
+            while(partSum >= s){
+                res = min(res, right-left);
+                partSum -= nums[left];
+                left++;
+            }    
+        }
+        return res == N+1 ? 0 : res;
+    }
+};
+
+/*
 438. 找到字符串中所有字母异位词
 给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
 字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。
