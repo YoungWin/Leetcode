@@ -104,51 +104,16 @@ public:
 给定 target = 5，返回 true。
 给定 target = 20，返回 false。
 */
-
 class Solution {
 public:
-    //以对角线为基准
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
         if(matrix.empty()) return false;
-        int row = matrix.size(), col = matrix[0].size();
-        if(row==0 || col==0) return false;
-        int less = min(row, col);
-        for(int i=0; i<less; i++){
-            bool rf=find(matrix, i, target, true);
-            bool cf=find(matrix, i, target, false);
-            if(rf || cf) return true;
-        }
-        return false;
-    }
-
-    bool find(vector<vector<int>>& matrix, int i, int target, bool isrow){
-        if(matrix.empty()) return false;
-        int row = matrix.size(), col = matrix[0].size();
-        if(row==0 || col==0) return false;
-        int left=i, right=0;
-        if(isrow){
-            right=col-1;   //遍历每一行
-        } else {
-            right=row-1;
-        }
-
-        while(left+1<right){
-            int mid=left+(right-left)/2;
-            if(isrow){
-                if(matrix[i][mid]==target) return true;
-                else if(matrix[i][mid]<target) left=mid;
-                else right=mid;
-            } else {
-                if(matrix[mid][i]==target) return true;
-                else if(matrix[mid][i]<target) left=mid;
-                else right=mid;
-            }
-        }
-        
-        if(isrow){
-            if(matrix[i][left]==target || matrix[i][right]==target) return true;
-        } else {
-            if(matrix[left][i]==target || matrix[right][i]==target) return true;
+        int row=matrix.size(), col=matrix[0].size();
+        int i=0, j=col-1;
+        while(i<=row-1 && j>=0){
+            if(matrix[i][j]==target) return true;
+            else if(matrix[i][j]<target) i++;
+            else j--;
         }
         return false;
     }
