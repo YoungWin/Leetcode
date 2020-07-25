@@ -359,9 +359,10 @@ public:
     //dp[i][j] ：对于 s1[1..i] 和 s2[1..j]，它们的 LCS 长度是 dp[i][j]。
     int longestCommonSubsequence(string text1, string text2) {
         int N1=text1.size(), N2=text2.size();
-        vector<vector<int>> dp(N1+1, vector<int>(N2+1,0));   //第0行和第0列表示其中一个串包含0个字符
-        for(int i=1; i<=N1; i++){
-            for(int j=1; j<=N2; j++){   //注意这里遍历起始范围和dp数组初始化，共同提供了dp的base case边界
+        if(N1==0 || N2==0) return 0;
+        vector<vector<int>> dp(N1+1, vector<int>(N2+1, 0));   //第0行和第0列表示其中一个串包含0个字符
+        for(int i=1; i<N1+1; i++){
+            for(int j=1; j<N2+1; j++){   //注意这里遍历起始范围和dp数组初始化，共同提供了dp的base case边界
                 if(text1[i-1]==text2[j-1]) dp[i][j]=dp[i-1][j-1]+1;
                 else dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
             }
