@@ -226,6 +226,7 @@ public:
 
 class Solution {
 public:
+    //dp[i,j] 表示字符串 s 的第 i 到 j 个字母组成的串（下文表示成 s[i:j]）是否为回文串
     string longestPalindrome(string s) {
         int N = s.size();
         if(N == 0 || N == 1) return s;
