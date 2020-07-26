@@ -156,24 +156,22 @@ public:
 进阶:
 如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。
 */
-
-class Solution{
+class Solution {
 public:
-	//dp[i]：以 nums[i] 结尾的连续子数组的最大和。
-    //注意：连续子数组一定要以 nums[i] 作为结尾。
-	int maxSubArray(vector<int>& nums){
-		int N=nums.size();
-		if(N==0) return 0;
-		vector<int> dp(N, 0);
-		dp[0]=nums[0];
-		int res=dp[0];   //
-		for(int i=1; i<N; i++){
-			if(dp[i-1]>0) dp[i]=dp[i-1]+nums[i];
-			else dp[i]=nums[i];
-			res=max(res,dp[i]);   //
-		}
-		return res;
-	}
+    //dp[i]：以 nums[i] 结尾的连续子数组的最大和。注意：连续子数组一定要以 nums[i] 作为结尾。
+    int maxSubArray(vector<int>& nums) {
+        int N=nums.size();
+        if(N==0) return 0;
+        vector<int> dp(N+1);
+        dp[1]=nums[0];
+        int res=dp[1];
+        for(int i=2; i<N+1; i++){
+            if(dp[i-1]>=0) dp[i]=dp[i-1]+nums[i-1];
+            else dp[i]=nums[i-1];
+            res=max(res, dp[i]);
+        }
+        return res;
+    }
 };
 
 /*
