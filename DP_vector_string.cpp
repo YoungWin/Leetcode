@@ -223,10 +223,9 @@ public:
 输入: "cbbd"
 输出: "bb"
 */
-
 class Solution {
 public:
-    //dp[i,j] 表示字符串 s 的第 i 到 j 个字母组成的串（下文表示成 s[i:j]）是否为回文串
+    //dp[i,j] 表示字符串 s 的第 i 到 j 个字母组成的串 是否为回文串
     string longestPalindrome(string s) {
         int N = s.size();
         if(N == 0 || N == 1) return s;
@@ -234,14 +233,14 @@ public:
         string res = string(1, s[0]);   //
         int curlen = 1;  
 
-        vector<vector<bool>> dp(N, vector<bool>(N, false));
-        for(int j = 0; j < N; j++){
-            for(int i = j; i >= 0; i--){   //固定右边界，左边界逐渐从j向左滑动
-                if((s[i] == s[j] && j - i <= 2) || (s[i] == s[j] && dp[i + 1][j - 1] )){
+        vector<vector<bool>> dp(N+1, vector<bool>(N+1, false));
+        for(int j = 1; j < N+1; j++){
+            for(int i = j; i >= 1; i--){   //固定右边界，左边界逐渐从j向左滑动
+                if((s[i-1] == s[j-1] && j - i <= 2) || (s[i-1] == s[j-1] && dp[i + 1][j - 1] )){
                     dp[i][j] = true;
 
                     if(j - i + 1 > curlen){   //
-                        res = s.substr(i, j - i + 1);   //取从i开始 向后j-i+1长度子串
+                        res = s.substr(i-1, j - i + 1);   //取从i开始 向后j-i+1长度子串
                         curlen = j - i + 1;
                     }
                 }
@@ -271,12 +270,12 @@ public:
     int countSubstrings(string s) {
         int N=s.size();
         if(N<2) return N;
-        vector<vector<bool>> dp(N, vector<bool>(N));
+        vector<vector<bool>> dp(N+1, vector<bool>(N+1));
         int cnt=0;
         
-        for(int j=0; j<N; j++){
-            for(int i=j; i>=0; i--){
-                if((s[i]==s[j] && j-i<=2)||(s[i]==s[j] && dp[i+1][j-1])){
+        for(int j=1; j<N+1; j++){
+            for(int i=j; i>=1; i--){
+                if((s[i-1]==s[j-1] && j-i<=2)||(s[i-1]==s[j-1] && dp[i+1][j-1])){
                     dp[i][j]=true;
                     cnt+=1;
                 }
@@ -305,21 +304,20 @@ public:
 1 <= s.length <= 1000
 s 只包含小写英文字母
 */
-
 class Solution {
 public:
-    //dp[i][j]：在子串 s[i..j] 中，最长回文子序列的长度为
+    //dp[i][j]：在子串 s的第i到第j个字符索引 范围，最长回文子序列的长度
     int longestPalindromeSubseq(string s) {
         int N=s.size();
-        vector<vector<int>> dp(N, vector<int>(N,0));
-        for(int i=0; i<N; i++) dp[i][i]=1;
-        for(int i=N-1; i>=0; i--){   //从后向前遍历 防止覆盖
-            for(int j=i+1; j<N; j++){
-                if(s[i]==s[j]) dp[i][j]=dp[i+1][j-1]+2;
+        vector<vector<int>> dp(N+1, vector<int>(N+1,0));
+        for(int i=1; i<N+1; i++) dp[i][i]=1;
+        for(int i=N; i>=1; i--){   //从后向前遍历 防止覆盖
+            for(int j=i+1; j<N+1; j++){
+                if(s[i-1]==s[j-1]) dp[i][j]=dp[i+1][j-1]+2;
                 else dp[i][j]=max(dp[i+1][j],dp[i][j-1]);
             }
         }
-        return dp[0][N-1];
+        return dp[1][N];
     }
 };
 
@@ -391,7 +389,7 @@ public:
 
 class Solution {
 public:
-    //dp[i][j] ：对于 s1[1..i] 和 s2[1..j]，它们的 LCS 长度是 dp[i][j]。
+    //dp[i][j] ：对于 s1前i个字符(含i) 和 s2前j个字符(含j)，它们的 LCS 长度是 dp[i][j]。
     int longestCommonSubsequence(string text1, string text2) {
         int N1=text1.size(), N2=text2.size();
         if(N1==0 || N2==0) return 0;
