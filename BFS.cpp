@@ -96,32 +96,34 @@ public:
 你可以假定输入的先决条件中没有重复的边。
 1 <= numCourses <= 10^5
 */
-
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<int> inDegree(numCourses, 0);
-        vector<vector<int>> neighbor(numCourses, vector<int>());
+        vector<int> dep(numCourses, 0);
+        vector<vector<int>> graph(numCourses, vector<int>());
         for(auto i:prerequisites){
-            inDegree[i[0]]++;   
-            neighbor[i[1]].push_back(i[0]);   //依赖i[1]的课程做成vector
+            dep[i[0]]++;
+            graph[i[1]].push_back(i[0]);
         }
         queue<int> qu;
-        for(int i=0; i<inDegree.size(); i++){
-            if(inDegree[i]==0) qu.push(i);
+        for(int i=0; i<numCourses; i++){
+            if(dep[i]==0) qu.push(i);
         }
 
-        vector<int> dealed;
+        int finish=0;
         while(!qu.empty()){
-            int tmp=qu.front();
+            int ft=qu.front();
             qu.pop();
-            dealed.push_back(tmp);
-            for(auto i:neighbor[tmp]){
-                inDegree[i]--;
-                if(inDegree[i]==0) qu.push(i);
+            finish+=1;
+
+            for(auto i:graph[ft]){   //学完ft 可以学的课
+                dep[i]--;
+                if(dep[i]==0) qu.push(i);
             }
         }
-        return dealed.size()==numCourses;
+
+        if(finish==numCourses) return true;
+        return false;
     }
 };
 
