@@ -39,42 +39,42 @@ class Solution {
 public:
     int numIslands(vector<vector<char>>& grid) {
         if(grid.empty()) return 0;
-        int R = grid.size();
-        int C = grid[0].size();
-        int res = 0;
+        int m=grid.size(), n=grid[0].size();
+        int cnt=0;
         queue<pair<int,int>> qu;
-        for(int i=0; i<R; i++){
-            for(int j=0; j<C; j++){
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
                 if(grid[i][j]=='1'){
-                    qu.push(pair<int,int>(i,j));   //记录岛屿点，便于后续bfs周围点
+                    qu.push({i,j});
                     grid[i][j]='0';
-                    res+=1;
+                    cnt+=1;
+
+                    while(!qu.empty()){
+                        auto ft=qu.front();
+                        qu.pop();
+                        int row=ft.first, col=ft.second;
+                        if(row-1>=0 && grid[row-1][col]=='1'){
+                            grid[row-1][col]='0';
+                            qu.push({row-1,col});
+                        }
+                        if(row+1<=m-1 && grid[row+1][col]=='1'){
+                            grid[row+1][col]='0';
+                            qu.push({row+1,col});
+                        }
+                        if(col-1>=0 && grid[row][col-1]=='1'){
+                            grid[row][col-1]='0';
+                            qu.push({row,col-1});
+                        }
+                        if(col+1<=n-1 && grid[row][col+1]=='1'){
+                            grid[row][col+1]='0';
+                            qu.push({row,col+1});
+                        }
+                    }
                 }
-                while(!qu.empty()){
-                    auto cur=qu.front();
-                    qu.pop();
-                    int fr=cur.first;   //行
-                    int sc=cur.second;
-                    if(fr-1>=0 && grid[fr-1][sc]=='1'){
-                        qu.push(pair<int,int>(fr-1,sc));
-                        grid[fr-1][sc]='0';
-                    }
-                    if(fr+1<R && grid[fr+1][sc]=='1'){
-                        qu.push(pair<int,int>(fr+1,sc));
-                        grid[fr+1][sc]='0';
-                    }
-                    if(sc-1>=0 && grid[fr][sc-1]=='1'){
-                        qu.push(pair<int,int>(fr,sc-1));
-                        grid[fr][sc-1]='0';
-                    }
-                    if(sc+1<C && grid[fr][sc+1]=='1'){
-                        qu.push(pair<int,int>(fr,sc+1));
-                        grid[fr][sc+1]='0';
-                    }
-                }
+
             }
         }
-        return res;
+        return cnt;
     }
 };
 
