@@ -279,23 +279,23 @@ s = "AABABBA", k = 1
 将中间的一个'A'替换为'B',字符串变为 "AABBBBA"。
 子串 "BBBB" 有最长重复字母, 答案为 4。
 */
-
 class Solution {
 public:
-    int characterReplacement(string s, int k){
-        unordered_map<char,int> window;
-        int left=0,right=0,res=0,maxc=0;
-        while(right < s.size()){
-            window[s[right]]++;
-            maxc=max(maxc,window[s[right]]);   //窗口内出现次数最多元素出现次数
-
-            while(right-left+1 > maxc+k){   //窗口长度>最多重复元素次数+可修改的k个元素
-                window[s[left]]--;
-                left++;
-            }
-
-            res=max(res,right-left+1);
+    int characterReplacement(string s, int k) {
+        unordered_map<char,int> um;
+        int left=0,right=0,res=0,element=0;
+        while(right<s.size()){
+            char fast=s[right];
+            um[fast]++;
             right++;
+            element=max(element,um[fast]);   //窗口内出现次数最多元素出现次数
+            
+            while(right-left>element+k){   //窗口长度>最多重复元素次数+可修改的k个元素
+                char slow=s[left];
+                left++;
+                um[slow]--;
+            }
+            res=max(res,right-left);       
         }
         return res;
     }
