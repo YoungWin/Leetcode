@@ -301,7 +301,7 @@ public:
         while(left+1<right){
             int mid = left+(right-left)/2;
             if(nums[right]==target) return right;
-            if(target<nums[right]){
+            else if(target<nums[right]){
                 if(nums[mid]>nums[right] || nums[mid]<target){
                     left=mid;
                 } else {
